@@ -80,6 +80,9 @@
   };
 
   build_untappd_calories = function(params) {
+    $('#abv_form').submit(function(event) {
+      return event.preventDefault();
+    });
     $('#serving_size').find('a').on('tap', function(event) {
       return update_calories($(event.target).data('serving-size'));
     });

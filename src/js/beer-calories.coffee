@@ -53,6 +53,8 @@ update_calories = (serving_size) ->
   $('#calories').text(calculate_calories($('#abv').val(), serving_size))
 
 build_untappd_calories = (params) ->
+  $('#abv_form').submit (event) ->
+    event.preventDefault()
   $('#serving_size').find('a').on 'tap', (event) ->
     update_calories($(event.target).data('serving-size'))
   $('#abv').change ->
