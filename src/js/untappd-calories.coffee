@@ -49,9 +49,14 @@ filter_url_params = (params, filtered_params) ->
 calculate_calories = (abv, floz = 12) ->
   return Math.round(floz * abv / 60 * 150)
 
+update_calories = (serving_size) ->
+  $('#calories').text(calculate_calories($('#abv').val(), serving_size))
+
 build_untappd_calories = (params) ->
+  $('#serving_size').find('a').on 'tap', (event) ->
+    update_calories($(event.target).data('serving-size'))
   $('#abv').change ->
-    $('#calories').text(calculate_calories($('#abv').val()))
+    update_calories($('#serving_size .ui-btn-active').first().data('serving-size'))
   if localStorage['access_token']
     $('#untappd_button').append('<a id="fill_abv" href="#">Fill ABV from last Untappd checkin</a>')
     $('#fill_abv').click ->
@@ -64,7 +69,6 @@ build_untappd_calories = (params) ->
       success: (data) ->
         console.log data
         beer = data['response']['checkins']['items'][0]['beer']
-        console.log calculate_calories(beer['beer_abv'])
         $('#content').append('<div id="last_checkin" align="center" id="ui-body-untappd" class="ui-body ui-body-a ui-corner-all">')
         $('#last_checkin').append("<p>Last Untappd checkin: #{beer['beer_name']} (<span id=\"last_abv\">#{beer['beer_abv']}</span>% ABV)</p>")
   else
