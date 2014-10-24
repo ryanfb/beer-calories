@@ -47,11 +47,16 @@ filter_url_params = (params, filtered_params) ->
 
 # http://beercritic.wordpress.com/beer-calorie-cheatsheet/
 calculate_calories = (abv, floz = 12) ->
-  return (floz * abv / 60 * 150)
+  return Math.round(floz * abv / 60 * 150)
 
 build_untappd_calories = (params) ->
+  $('#abv').change ->
+    $('#calories').text(calculate_calories($('#abv').val()))
   if localStorage['access_token']
-    $('#untappd_button').append('<a href="#">Fill ABV from last Untappd checkin</a>')
+    $('#untappd_button').append('<a id="fill_abv" href="#">Fill ABV from last Untappd checkin</a>')
+    $('#fill_abv').click ->
+      $('#abv').val($('#last_abv').text())
+      $('#abv').change()
     $.ajax "#{untappd_api_url}/user/checkins/?access_token=#{localStorage['access_token']}&limit=1",
       type: 'GET'
       dataType: 'json'
