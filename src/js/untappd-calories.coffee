@@ -8,35 +8,14 @@ untappd_api_url = 'https://api.untappd.com/v4'
 untappd_auth_url = ->
   "https://untappd.com/oauth/authenticate/?#{$.param(untappd_config)}"
 
-expires_in_to_date = (expires_in) ->
-  cookie_expires = new Date
-  cookie_expires.setTime(cookie_expires.getTime() + expires_in * 1000)
-  return cookie_expires
-
-set_cookie = (key, value, expires_in) ->
-  cookie = "#{key}=#{value}; "
-  cookie += "expires=#{expires_in_to_date(expires_in).toUTCString()}; "
-  cookie += "path=#{window.location.pathname.substring(0,window.location.pathname.lastIndexOf('/')+1)}"
-  document.cookie = cookie
-
-delete_cookie = (key) ->
-  set_cookie key, null, -1
-
-get_cookie = (key) ->
-  key += "="
-  for cookie_fragment in document.cookie.split(';')
-    cookie_fragment = cookie_fragment.replace(/^\s+/, '')
-    return cookie_fragment.substring(key.length, cookie_fragment.length) if cookie_fragment.indexOf(key) == 0
-  return null
-
-# write an Untappd access token into a cached cookie
-set_access_token_cookie = (params, callback) ->
+# write an Untappd access token into localStorage
+set_access_token = (params, callback) ->
   if params['state']?
     console.log "Replacing hash with state: #{params['state']}"
     history.replaceState(null,'',window.location.href.replace("#{location.hash}","##{params['state']}"))
   if params['access_token']?
     console.log("Got access token: #{params['access_token']}")
-    set_cookie('access_token',params['access_token'],31536000)
+    localStorage['access_token'] = params['access_token']
     callback(params) if callback?
   else
     callback(params) if callback?
@@ -71,9 +50,9 @@ calculate_calories = (abv, floz = 12) ->
   return (floz * abv / 60 * 150)
 
 build_untappd_calories = (params) ->
-  if get_cookie 'access_token'
+  if localStorage['access_token']
     $('#untappd_button').append('<a href="#">Fill ABV from last Untappd checkin</a>')
-    $.ajax "#{untappd_api_url}/user/checkins/?access_token=#{get_cookie 'access_token'}&limit=1",
+    $.ajax "#{untappd_api_url}/user/checkins/?access_token=#{localStorage['access_token']}&limit=1",
       type: 'GET'
       dataType: 'json'
       crossDomain: true
@@ -87,4 +66,4 @@ build_untappd_calories = (params) ->
     $('#untappd_button').append("<a href=\"#{untappd_auth_url()}\">Log in to Untappd</a>")
 
 $(document).ready ->
-  set_access_token_cookie(filter_url_params(parse_query_string()), build_untappd_calories)
+  set_access_token(filter_url_params(parse_query_string()), build_untappd_calories)
