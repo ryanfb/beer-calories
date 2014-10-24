@@ -11,16 +11,44 @@
 <!-- Makes your prototype chrome-less once bookmarked to your phone's home screen -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
-<!-- Include the compiled Ratchet CSS -->
-<link href="//cdnjs.cloudflare.com/ajax/libs/ratchet/2.0.2/css/ratchet.min.css" rel="stylesheet">
-<!-- Include the compiled Ratchet JS -->
-<script src="//cdnjs.cloudflare.com/ajax/libs/ratchet/2.0.2/js/ratchet.min.js"></script>
+<link href="http://code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.min.css" rel="stylesheet">
+<script src="http://code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.min.js"></script>
 </head>
 <body>
-    <header class="bar bar-nav">
-      <h1 class="title">Untappd Calorie Counter</h1>
-    </header>
-    <div class="content">
-    </div>
+	<div data-role="page" id="testpage">
+		<div data-role="header">
+			<h1>Beer Calories</h1>
+		</div>
+		<div data-role="content">
+			<div align="center" id="ui-body-calories" class="ui-body ui-body-a ui-corner-all">
+				<big style="font-size: 120px">150</big>
+				<p>calories</p>
+			</div>
+			<br/>
+			<div align="center" id="ui-body-untappd" class="ui-body ui-body-a ui-corner-all">
+				<p>Last Untappd checkin: Wake Up Dead Nitro (10.2% ABV)</p>
+			</div>
+		</div>
+		<div data-role="footer" data-position="fixed">
+			<ul data-role="listview" data-inset="true">
+				<li><a href="#">Fill ABV from last Untappd checkin</a></li>
+			</ul>
+			<div data-role="navbar">
+				<ul>
+					<li><a href="#" class="ui-btn-active ui-state-persist">12oz (bottle)</a></li>
+					<li><a href="#">16oz (pint)</a></li>
+					<li><a href="#">22oz (bomber)</a></li>
+				</ul>
+			</div>
+			<form>
+				<ul data-role="listview" data-inset="true">
+				<li class="ui-field-contain">
+					<!-- <label for="abv">ABV:</label> -->
+					<input size="3" name="abv" id="abv" type="number" step="any" placeholder="ABV"/>
+				</li>
+				</ul>
+			</form>
+		</div>
+	</div>
 </body>
 </html>
