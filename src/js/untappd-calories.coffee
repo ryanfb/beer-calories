@@ -1,7 +1,9 @@
 untappd_config =
-	client_id: '6CEC661CC1E87C1BE1B7D7FE30865F670AF6218B'
-	redirect_url: window.location.href.replace("#{location.hash}",'')
-	response_type: 'token'
+  client_id: '6CEC661CC1E87C1BE1B7D7FE30865F670AF6218B'
+  redirect_url: window.location.href.replace("#{location.hash}",'')
+  response_type: 'token'
+
+untappd_api_url = 'https://api.untappd.com/v4'
 
 untappd_auth_url = ->
   "https://untappd.com/oauth/authenticate/?#{$.param(untappd_config)}"
@@ -33,11 +35,11 @@ set_access_token_cookie = (params, callback) ->
     console.log "Replacing hash with state: #{params['state']}"
     history.replaceState(null,'',window.location.href.replace("#{location.hash}","##{params['state']}"))
   if params['access_token']?
-  	console.log("Got access token: #{params['access_token']}")
-  	set_cookie('access_token',params['access_token'],31536000)
-  	callback(params) if callback?
+    console.log("Got access token: #{params['access_token']}")
+    set_cookie('access_token',params['access_token'],31536000)
+    callback(params) if callback?
   else
-  	callback(params) if callback?
+    callback(params) if callback?
 
 # parse URL hash parameters into an associative array object
 parse_query_string = (query_string) ->
@@ -66,14 +68,23 @@ filter_url_params = (params, filtered_params) ->
 
 # http://beercritic.wordpress.com/beer-calorie-cheatsheet/
 calculate_calories = (abv, floz = 12) ->
-	return (floz * abv / 60 * 150)
+  return (floz * abv / 60 * 150)
 
 build_untappd_calories = (params) ->
-	if get_cookie 'access_token'
-		console.log 'Success!'
-	else
-		console.log 'Not logged in, redirecting'
-		window.location = untappd_auth_url()
+  if get_cookie 'access_token'
+    $('#untappd_button').append('<a href="#">Fill ABV from last Untappd checkin</a>')
+    $.ajax "#{untappd_api_url}/user/checkins/?access_token=#{get_cookie 'access_token'}&limit=1",
+      type: 'GET'
+      dataType: 'json'
+      crossDomain: true
+      success: (data) ->
+        console.log data
+        beer = data['response']['checkins']['items'][0]['beer']
+        console.log calculate_calories(beer['beer_abv'])
+        $('#content').append('<div id="last_checkin" align="center" id="ui-body-untappd" class="ui-body ui-body-a ui-corner-all">')
+        $('#last_checkin').append("<p>Last Untappd checkin: #{beer['beer_name']} (<span id=\"last_abv\">#{beer['beer_abv']}</span>% ABV)</p>")
+  else
+    $('#untappd_button').append("<a href=\"#{untappd_auth_url()}\">Log in to Untappd</a>")
 
 $(document).ready ->
   set_access_token_cookie(filter_url_params(parse_query_string()), build_untappd_calories)

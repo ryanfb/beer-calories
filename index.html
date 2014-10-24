@@ -19,19 +19,16 @@
 		<div data-role="header">
 			<h1>Beer Calories</h1>
 		</div>
-		<div data-role="content">
+		<div data-role="content" id="content">
 			<div align="center" id="ui-body-calories" class="ui-body ui-body-a ui-corner-all">
-				<big style="font-size: 120px">150</big>
+				<big id="calories" style="font-size: 120px">?</big>
 				<p>calories</p>
 			</div>
 			<br/>
-			<div align="center" id="ui-body-untappd" class="ui-body ui-body-a ui-corner-all">
-				<p>Last Untappd checkin: Wake Up Dead Nitro (10.2% ABV)</p>
-			</div>
 		</div>
 		<div data-role="footer" data-position="fixed">
 			<ul data-role="listview" data-inset="true">
-				<li><a href="#">Fill ABV from last Untappd checkin</a></li>
+				<li id="untappd_button"></li>
 			</ul>
 			<div data-role="navbar">
 				<ul>
@@ -43,7 +40,6 @@
 			<form>
 				<ul data-role="listview" data-inset="true">
 				<li class="ui-field-contain">
-					<!-- <label for="abv">ABV:</label> -->
 					<input size="3" name="abv" id="abv" type="number" step="any" placeholder="ABV"/>
 				</li>
 				</ul>
