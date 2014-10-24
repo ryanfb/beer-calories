@@ -86,7 +86,7 @@
     $('#serving_size').find('a').on('tap', function(event) {
       return update_calories($(event.target).data('serving-size'));
     });
-    $('#abv').change(function() {
+    $('#abv').on("change keyup", function() {
       return update_calories($('#serving_size .ui-btn-active').first().data('serving-size'));
     });
     if (localStorage['access_token']) {

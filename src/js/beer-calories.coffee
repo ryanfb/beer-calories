@@ -57,7 +57,7 @@ build_untappd_calories = (params) ->
     event.preventDefault()
   $('#serving_size').find('a').on 'tap', (event) ->
     update_calories($(event.target).data('serving-size'))
-  $('#abv').change ->
+  $('#abv').on "change keyup", ->
     update_calories($('#serving_size .ui-btn-active').first().data('serving-size'))
   if localStorage['access_token']
     $('#untappd_button').append('<a id="fill_abv" href="#">Fill ABV from last Untappd checkin</a>')
