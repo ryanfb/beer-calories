@@ -100,7 +100,7 @@
           beer = data['response']['checkins']['items'][0]['beer'];
           $('#content').append('<div id="last_checkin" align="center" id="ui-body-untappd" class="ui-body ui-body-a ui-corner-all">');
           $('#last_checkin').append("<p>Last Untappd checkin: " + beer['beer_name'] + " (<span id=\"last_abv\">" + beer['beer_abv'] + "</span>% ABV)</p>");
-          $('#untappd_button').append('<a id="fill_abv" href="#">Fill ABV from last Untappd checkin</a>');
+          $('#untappd_button').append('<a id="fill_abv" href="#" class="ui-btn ui-btn-icon-right ui-icon-carat-r">Fill ABV from last Untappd checkin</a>');
           return $('#fill_abv').click(function() {
             $('#abv').val($('#last_abv').text());
             return $('#abv').change();
