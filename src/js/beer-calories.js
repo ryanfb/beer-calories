@@ -90,11 +90,6 @@
       return update_calories($('#serving_size .ui-btn-active').first().data('serving-size'));
     });
     if (localStorage['access_token']) {
-      $('#untappd_button').append('<a id="fill_abv" href="#">Fill ABV from last Untappd checkin</a>');
-      $('#fill_abv').click(function() {
-        $('#abv').val($('#last_abv').text());
-        return $('#abv').change();
-      });
       return $.ajax("" + untappd_api_url + "/user/checkins/?access_token=" + localStorage['access_token'] + "&limit=1", {
         type: 'GET',
         dataType: 'json',
@@ -104,7 +99,12 @@
           console.log(data);
           beer = data['response']['checkins']['items'][0]['beer'];
           $('#content').append('<div id="last_checkin" align="center" id="ui-body-untappd" class="ui-body ui-body-a ui-corner-all">');
-          return $('#last_checkin').append("<p>Last Untappd checkin: " + beer['beer_name'] + " (<span id=\"last_abv\">" + beer['beer_abv'] + "</span>% ABV)</p>");
+          $('#last_checkin').append("<p>Last Untappd checkin: " + beer['beer_name'] + " (<span id=\"last_abv\">" + beer['beer_abv'] + "</span>% ABV)</p>");
+          $('#untappd_button').append('<a id="fill_abv" href="#">Fill ABV from last Untappd checkin</a>');
+          return $('#fill_abv').click(function() {
+            $('#abv').val($('#last_abv').text());
+            return $('#abv').change();
+          });
         }
       });
     } else {
