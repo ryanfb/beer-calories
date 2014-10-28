@@ -73,6 +73,7 @@ build_untappd_calories = (params) ->
         $('#fill_abv').click ->
           $('#abv').val($('#last_abv').text())
           $('#abv').change()
+        $('#untappd_button').attr('class','ui-first-child ui-last-child')
   else
     $('#untappd_button').append("<a href=\"#{untappd_auth_url()}\">Log in to Untappd</a>")
 
