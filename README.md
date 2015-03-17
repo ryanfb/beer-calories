@@ -1,7 +1,7 @@
-beer-calories
+[beer-calories](https://ryanfb.github.io/beer-calories/)
 =============
 
-Beer Calories is a JavaScript-based calorie calculator for beer with [Untappd](https://untappd.com) integration.
+[Beer Calories](https://ryanfb.github.io/beer-calories/) is a JavaScript-based calorie calculator for beer with [Untappd](https://untappd.com) integration.
 
 It uses the simple calorie formula described [here](http://beercritic.wordpress.com/beer-calorie-cheatsheet/).
 

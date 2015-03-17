@@ -1,3 +1,6 @@
+---
+---
+
 untappd_config =
   client_id: '6CEC661CC1E87C1BE1B7D7FE30865F670AF6218B'
   redirect_url: 'https://ryanfb.github.io/beer-calories/'
